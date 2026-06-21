@@ -27,7 +27,6 @@ resource "aws_instance" "dev" {
   ami                    = var.ami_id
   instance_type          = var.type
   key_name               = var.keyname
-  user_data              = file("jenkins.sh")
   vpc_security_group_ids = ["${aws_security_group.allow_tls.id}"]
   tags = {
     Name = "dev"
