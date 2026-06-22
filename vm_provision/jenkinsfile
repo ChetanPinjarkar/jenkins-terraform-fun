@@ -1,4 +1,4 @@
-pipeline {
+Pipeline {
     agent any
 
     parameters {
@@ -8,7 +8,6 @@ pipeline {
             description: 'Choose the terraform action to perform'
             )
     }
-
     stages {
         stage('Checkout') {
             steps {
