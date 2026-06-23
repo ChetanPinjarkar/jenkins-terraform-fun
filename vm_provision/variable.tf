@@ -14,3 +14,8 @@ variable "keyname" {
   default = "my_key_pair"
 
 }
+
+variable "count" {
+  type    = number
+  default = 1
+}
