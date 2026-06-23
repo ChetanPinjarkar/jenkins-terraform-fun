@@ -15,7 +15,7 @@ variable "keyname" {
 
 }
 
-variable "count" {
+variable "instance_count" {
   type    = number
   default = 1
 }
