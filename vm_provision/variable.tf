@@ -6,7 +6,7 @@ variable "ami_id" {
 }
 variable "type" {
   type    = string
-  default = "m7i-flex.large"
+  default = "t2.micro"
 
 }
 variable "keyname" {
