@@ -1,6 +1,5 @@
-Pipeline {
+pipeline {
     agent any
-
     parameters {
         choice(
             name: 'action', 
@@ -11,8 +10,7 @@ Pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/ChetanPinjarkar/jenkins-terraform-fun.git'
+                git branch: 'main', url: 'https://github.com/ChetanPinjarkar/jenkins-terraform-fun.git'
             }
         }
         stage('Terraform init') {
@@ -30,16 +28,31 @@ Pipeline {
             }
         }
         stage('Terraform Plan') {
+            when {
+                expression { params.action == 'apply' }
+            }
             steps {
                 dir('vm_provision') {
                     sh 'terraform plan -out=tfplan'
                 }
             }
         }
+        stage('Approval') {
+            steps {
+                input message: "Confirm terraform ${params.action}?",
+                ok: "Yes, proceed"
+            }
+        }
         stage('Terraform Apply or Destroy') {
             steps {
                 dir('vm_provision') {
-                    sh "terraform ${params.action} -auto-approve tfplan"
+                    script {
+                        if (params.action == 'apply') {
+                            sh 'terraform apply -auto-approve tfplan'
+                        } else {
+                            sh 'terraform destroy -auto-approve'
+                        }
+                    }
                 }
             }
         }
